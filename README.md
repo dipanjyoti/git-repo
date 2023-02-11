@@ -86,7 +86,11 @@ wandb login
 
 6. Set up multiple runs (use the command to generate .yaml files based on grid/random search):
 
+
+```
 python -m generate_configs.generate --strategy grid path_to_yaml_file_template/template.yaml path_to_yaml_file_template/config_files --no-expand MODEL
+
+```
 
 ## AWS Helpers
 
