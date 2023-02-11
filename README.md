@@ -7,9 +7,15 @@
 1. Set up python packages
 
 ```sh
-python -m venv venv
-# Activate your virtual environment somehow
-source venv/bin/activate.fish 
+git clone https://github.com/dipanjyoti/git-repo.git
+cd git-repo
+```
+
+
+```sh
+
+conda create -n swin python=3.10 -y
+conda activate swin
 ```
 
 CUDA 11.6
@@ -46,20 +52,18 @@ pip install -v --disable-pip-version-check --no-cache-dir --global-option="--cpp
 We use the iNat21 dataseta available on [GitHub](https://github.com/visipedia/inat_comp/tree/master/2021)
 
 ```
-cd /mnt/10tb
-mkdir -p data/inat21
-cd data/inat21
-mkdir compressed raw
-cd compressed
+cd /local/scratch/paul.1164/data/inat21/compressed
+
 wget https://ml-inat-competition-datasets.s3.amazonaws.com/2021/train.tar.gz
 wget https://ml-inat-competition-datasets.s3.amazonaws.com/2021/val.tar.gz
 
-# pv is just a progress bar
-pv val.tar.gz | tar -xz
-mv val ../raw/  # if I knew how tar worked I could have it extract to raw/
+#unzip the files
+tar -xvzf train.tar.gz
+tar -xvzf val.tar.gz
 
-pv train.tar.gz | tar -xz
+# move to raw directory
 mv train ../raw/
+mv val ../raw/
 ```
 
 4. Preprocess iNat 21
@@ -80,20 +84,9 @@ python -m data.inat preprocess $DATA_DIR train resize 256
 wandb login
 ```
 
-6. Set up an `env.fish` file:
+6. Set up multiple runs (use the command to generate .yaml files based on grid/random search):
 
-You need to provide `$VENV` and a `$RUN_OUTPUT` environment variables.
-I recommend using a file to save these variables.
-
-In fish:
-
-```fish
-# scripts/env.fish
-set -gx VENV venv
-set -gx RUN_OUTPUT /mnt/10tb/models/hierarchical-vision
-```
-
-Then run `source scripts/env.fish`
+python -m generate_configs.generate --strategy grid path_to_yaml_file_template/template.yaml path_to_yaml_file_template/config_files --no-expand MODEL
 
 ## AWS Helpers
 
