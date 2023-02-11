@@ -93,7 +93,6 @@ wandb login
 python -m generate_configs.generate --strategy grid path_to_yaml_file_template/template.yaml path_to_yaml_file_template/config_files --no-expand MODEL
 
 # grid path_to_yaml_file_template/template.yaml --> configs/nabird/fuzzy-fig-192/fuzzy-fig-192.yaml
-
 # path_to_yaml_file_template/config_files --> configs/nabird/fuzzy-fig-192/config_files
 
 ```
